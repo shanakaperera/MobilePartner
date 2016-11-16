@@ -68,6 +68,7 @@ public class MobilePartnerView extends javax.swing.JFrame {
         C_model = ContactsTableModel.getInstance();
         P_model = PredefinesTableModel.getInstance();
         initComponents();
+        checkDBConfigure();
         messageTable.removeColumn(messageTable.getColumnModel().getColumn(0));
         contactsTable.removeColumn(contactsTable.getColumnModel().getColumn(0));
         predefinesTable.removeColumn(predefinesTable.getColumnModel().getColumn(0));
@@ -120,9 +121,20 @@ public class MobilePartnerView extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         predefinesTable = new javax.swing.JTable();
         newPredefines = new javax.swing.JButton();
-        editPredefines = new javax.swing.JButton();
         deletePredefines = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
+        jdbcUrl = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        dbUser = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        dbDriver = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        dbPass = new javax.swing.JPasswordField();
+        saveXml = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        dbMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Mobile Partner");
@@ -285,7 +297,7 @@ public class MobilePartnerView extends javax.swing.JFrame {
         predefinesTable.setModel(P_model);
         predefinesTable.setRowSorter(sorterPredefines);
         predefinesTable.setRowHeight(40);
-        //predefinesTable.setDefaultRenderer(Object.class, new CustomRenderer());
+        predefinesTable.setDefaultRenderer(Object.class, new CustomRendererPredefines());
         Enumeration<TableColumn> columnsPredefines = predefinesTable.getColumnModel().getColumns();
         while (columnsPredefines.hasMoreElements()) {
             TableColumn nextElement = columnsPredefines.nextElement();
@@ -301,9 +313,12 @@ public class MobilePartnerView extends javax.swing.JFrame {
             }
         });
 
-        editPredefines.setText("Edit");
-
         deletePredefines.setText("Delete");
+        deletePredefines.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deletePredefinesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -315,7 +330,6 @@ public class MobilePartnerView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(newPredefines, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(editPredefines, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deletePredefines, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -327,24 +341,95 @@ public class MobilePartnerView extends javax.swing.JFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(newPredefines, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(editPredefines, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(deletePredefines, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Pre-define Messages", jPanel5);
 
+        jLabel2.setText("JDBC Url :");
+
+        jLabel3.setText("DB User :");
+
+        dbDriver.setText("com.mysql.jdbc.Driver");
+
+        jLabel4.setText("DB Driver :");
+
+        jLabel5.setText("DB Password :");
+
+        saveXml.setText("Save");
+        saveXml.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveXmlActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Ex : jdbc:mysql://<host>:<port>/<db_name>");
+
+        jLabel7.setText("Ex : com.mysql.jdbc.Driver");
+
+        dbMessage.setForeground(new java.awt.Color(204, 0, 0));
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 747, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(121, 121, 121)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(41, 41, 41)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dbDriver, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+                            .addComponent(dbPass)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(saveXml, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(41, 41, 41)
+                        .addComponent(dbUser, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(dbMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addGap(41, 41, 41)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+                                .addComponent(jdbcUrl)))))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 375, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(dbMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jdbcUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dbUser, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(28, 28, 28)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dbDriver, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addGap(11, 11, 11)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(dbPass, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addComponent(saveXml, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
 
         jTabbedPane2.addTab("DB Settings", jPanel6);
@@ -444,6 +529,10 @@ public class MobilePartnerView extends javax.swing.JFrame {
             if (confirm == 0) {
                 try {
                     EntityManagerFactory emf = controller.getEntityManagerFactory();
+                    if (emf == null) {
+                        dbMessage.setText("Your database is not configured yet. Please provide db information.");
+                        return;
+                    }
                     InboundMessageJpaController inboundController = new InboundMessageJpaController(emf);
                     inboundController.destroy(Integer.parseInt(messageId));
                     emf.close();
@@ -530,6 +619,56 @@ public class MobilePartnerView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_newPredefinesActionPerformed
 
+    private void deletePredefinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePredefinesActionPerformed
+        if (predefinesTable.getSelectedRows().length > 0) {
+            int tableSelectedRow = predefinesTable.getSelectedRow();
+            String defineId = P_model.getValueAt(tableSelectedRow, 0).toString();
+
+            int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete ?",
+                    "Warning !", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+            if (confirm == 0) {
+                try {
+                    EntityManagerFactory emf = controller.getEntityManagerFactory();
+                    if (emf == null) {
+                        dbMessage.setText("Your database is not configured yet. Please provide db information.");
+                        return;
+                    }
+                    MessageDefineJpaController defineMsgController = new MessageDefineJpaController(emf);
+                    defineMsgController.destroy(Integer.parseInt(defineId));
+                    emf.close();
+                    JOptionPane.showMessageDialog(this, "Deleted Successfully !",
+                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                    P_model.addAllData();
+                    predefinesTable.setModel(P_model);
+                    P_model.fireTableDataChanged();
+                    /// refresh message table too
+                    M_model.addAllData();
+                    messageTable.setModel(M_model);
+                    M_model.fireTableDataChanged();
+                } catch (NonexistentEntityException ex) {
+                    Logger.getLogger(MobilePartnerView.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(MobilePartnerView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
+    }//GEN-LAST:event_deletePredefinesActionPerformed
+
+    private void saveXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveXmlActionPerformed
+        try {
+            boolean isConfigured = createXML(jdbcUrl.getText(), dbUser.getText(), dbDriver.getText(), dbPass.getText());
+
+            if (isConfigured) {
+                JOptionPane.showMessageDialog(this, "Configured Successfully !",
+                        "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MobilePartnerView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_saveXmlActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -570,12 +709,21 @@ public class MobilePartnerView extends javax.swing.JFrame {
     private javax.swing.JPanel box_contacts;
     private javax.swing.JPanel box_messages;
     private javax.swing.JTable contactsTable;
+    private javax.swing.JTextField dbDriver;
+    private javax.swing.JLabel dbMessage;
+    private javax.swing.JPasswordField dbPass;
+    private javax.swing.JTextField dbUser;
     private javax.swing.JButton deleteContact;
     private javax.swing.JButton deleteMessage;
     private javax.swing.JButton deletePredefines;
-    private javax.swing.JButton editPredefines;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -587,10 +735,12 @@ public class MobilePartnerView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTextField jdbcUrl;
     public static javax.swing.JTable messageTable;
     private javax.swing.JButton newPredefines;
     private javax.swing.JTable predefinesTable;
     private javax.swing.JButton saveAsContact;
+    private javax.swing.JButton saveXml;
     private javax.swing.JButton startConnectionBtn;
     // End of variables declaration//GEN-END:variables
 
@@ -813,6 +963,7 @@ public class MobilePartnerView extends javax.swing.JFrame {
     private boolean saveToContacts(SavedContacts savedContacts) throws Exception {
 
         EntityManagerFactory emf = controller.getEntityManagerFactory();
+
         SavedContactsJpaController svdCntctController = new SavedContactsJpaController(emf);
 
         try {
@@ -842,24 +993,28 @@ public class MobilePartnerView extends javax.swing.JFrame {
         return configOverrides;
     }
 
-    public void createXML() throws Exception {
+    public boolean createXML(String url, String user, String driver, String password) throws Exception {
         Element root = new Element("dbconf");
         Document doc = new Document();
 
         Element child1 = new Element("url");
-        child1.addContent("jdbc:mysql://localhost:3306/mobile_partner");
+        // child1.addContent("jdbc:mysql://localhost:3306/mobile_partner");
+        child1.addContent(url);
         child1.setAttribute("name", "javax.persistence.jdbc.url");
 
         Element child2 = new Element("user");
-        child2.addContent("root");
+        // child2.addContent("root");
+        child2.addContent(user);
         child2.setAttribute("name", "javax.persistence.jdbc.user");
 
         Element child3 = new Element("driver");
-        child3.addContent("com.mysql.jdbc.Driver");
+        //child3.addContent("com.mysql.jdbc.Driver");
+        child3.addContent(driver);
         child3.setAttribute("name", "javax.persistence.jdbc.driver");
 
         Element child4 = new Element("password");
-        child4.addContent("nbuser");
+        //  child4.addContent("nbuser");
+        child4.addContent(password);
         child4.setAttribute("name", "javax.persistence.jdbc.password");
 
         root.addContent(child1);
@@ -872,5 +1027,44 @@ public class MobilePartnerView extends javax.swing.JFrame {
         XMLOutputter outter = new XMLOutputter();
         outter.setFormat(Format.getPrettyFormat());
         outter.output(doc, new FileWriter(new File(dir + "\\dbconf.xml")));
+        File xmlFile = new File(dir + "\\dbconf.xml");
+        if (xmlFile.exists()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void checkDBConfigure() {
+        File xmlFile = new File(dir + "\\dbconf.xml");
+        if (!xmlFile.exists()) {
+            dbMessage.setText("Your database is not configured yet. Please provide db information.");
+        } else {
+            try {
+                Map<String, Object> configuredOverrides = getConfiguredOverrides();
+
+                for (Map.Entry<String, Object> entry : configuredOverrides.entrySet()) {
+                    String key = entry.getKey();
+                    Object value = entry.getValue();
+
+                    switch (key) {
+                        case "javax.persistence.jdbc.url":
+                            jdbcUrl.setText(value.toString());
+                            break;
+                        case "javax.persistence.jdbc.user":
+                            dbUser.setText(value.toString());
+                            break;
+                        case "javax.persistence.jdbc.driver":
+                            dbDriver.setText(value.toString());
+                            break;
+                        case "javax.persistence.jdbc.password":
+                            dbPass.setText(value.toString());
+                            break;
+                    }
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(MobilePartnerView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

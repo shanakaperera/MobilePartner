@@ -7,14 +7,12 @@ package view;
 
 import controller.MobilePartnerController;
 import db_pojo.MessageDefine;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
-import javax.swing.JLabel;
 import javax.swing.table.AbstractTableModel;
 import jpa_controllers.MessageDefineJpaController;
 
@@ -26,7 +24,7 @@ public class PredefinesTableModel extends AbstractTableModel {
 
     List<MessageDefine> modelData = new ArrayList<>();
     String colNames[] = {"Id", "Type", "Notifiying Color"};
-    Class<?> colClasses[] = {Integer.class, String.class, JLabel.class};
+    Class<?> colClasses[] = {Integer.class, String.class, Integer.class};
     private static PredefinesTableModel singletonForm = new PredefinesTableModel();
 
     private PredefinesTableModel() {
@@ -72,13 +70,13 @@ public class PredefinesTableModel extends AbstractTableModel {
             return modelData.get(rowIndex).getTypeName();
         }
         if (columnIndex == 2) {
-            return new Color(Integer.parseInt(modelData.get(rowIndex).getDescription()));
+            return Integer.parseInt(modelData.get(rowIndex).getDescription());
         }
 
         return null;
     }
-    
-        @Override
+
+    @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         if (columnIndex == 0) {
             modelData.get(rowIndex).setId((Integer) aValue);
@@ -89,7 +87,7 @@ public class PredefinesTableModel extends AbstractTableModel {
         if (columnIndex == 2) {
             modelData.get(rowIndex).setDescription((String) aValue);
         }
-        
+
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 

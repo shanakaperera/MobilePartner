@@ -378,7 +378,6 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="newPredefines" min="-2" pref="102" max="-2" attributes="0"/>
-                                  <Component id="editPredefines" min="-2" pref="102" max="-2" attributes="0"/>
                                   <Component id="deletePredefines" min="-2" pref="102" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
@@ -393,9 +392,7 @@
                                   <Component id="jScrollPane3" min="-2" pref="342" max="-2" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Component id="newPredefines" min="-2" pref="31" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="editPredefines" min="-2" pref="31" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="deletePredefines" min="-2" pref="31" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -443,7 +440,7 @@
                             </Property>
                           </Properties>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="sorterPredefines = new TableRowSorter&lt;&gt;(P_model);&#xa;predefinesTable.setModel(P_model);&#xa;predefinesTable.setRowSorter(sorterPredefines);&#xa;predefinesTable.setRowHeight(40);&#xa;//predefinesTable.setDefaultRenderer(Object.class, new CustomRenderer());&#xa;Enumeration&lt;TableColumn&gt; columnsPredefines = predefinesTable.getColumnModel().getColumns();&#xa;        while (columnsPredefines.hasMoreElements()) {&#xa;            TableColumn nextElement = columnsPredefines.nextElement();&#xa;            nextElement.setHeaderRenderer(new ColumnHeaderRenderer());&#xa;            &#xa;        }"/>
+                            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="sorterPredefines = new TableRowSorter&lt;&gt;(P_model);&#xa;predefinesTable.setModel(P_model);&#xa;predefinesTable.setRowSorter(sorterPredefines);&#xa;predefinesTable.setRowHeight(40);&#xa;predefinesTable.setDefaultRenderer(Object.class, new CustomRendererPredefines());&#xa;Enumeration&lt;TableColumn&gt; columnsPredefines = predefinesTable.getColumnModel().getColumns();&#xa;        while (columnsPredefines.hasMoreElements()) {&#xa;            TableColumn nextElement = columnsPredefines.nextElement();&#xa;            nextElement.setHeaderRenderer(new ColumnHeaderRenderer());&#xa;            &#xa;        }"/>
                           </AuxValues>
                         </Component>
                       </SubComponents>
@@ -456,15 +453,13 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newPredefinesActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="editPredefines">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Edit"/>
-                      </Properties>
-                    </Component>
                     <Component class="javax.swing.JButton" name="deletePredefines">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Delete"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deletePredefinesActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -480,15 +475,137 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="747" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="121" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="41" pref="41" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="dbDriver" pref="397" max="32767" attributes="0"/>
+                                          <Component id="dbPass" max="32767" attributes="0"/>
+                                          <Component id="jLabel7" alignment="1" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="saveXml" alignment="1" min="-2" pref="91" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                                      <Component id="dbUser" min="-2" pref="397" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                                      <Component id="dbMessage" min="-2" pref="486" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="jLabel6" pref="397" max="32767" attributes="0"/>
+                                              <Component id="jdbcUrl" max="32767" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <EmptySpace pref="119" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="375" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="dbMessage" min="-2" pref="14" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jdbcUrl" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="dbUser" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="dbDriver" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="dbPass" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="saveXml" min="-2" pref="33" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                     </DimensionLayout>
                   </Layout>
+                  <SubComponents>
+                    <Component class="javax.swing.JTextField" name="jdbcUrl">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel2">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="JDBC Url :"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="dbUser">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel3">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="DB User :"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="dbDriver">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="com.mysql.jdbc.Driver"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel4">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="DB Driver :"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel5">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="DB Password :"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JPasswordField" name="dbPass">
+                    </Component>
+                    <Component class="javax.swing.JButton" name="saveXml">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Save"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveXmlActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel6">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Ex : jdbc:mysql://&lt;host&gt;:&lt;port&gt;/&lt;db_name&gt;"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel7">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Ex : com.mysql.jdbc.Driver"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="dbMessage">
+                      <Properties>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="0" green="0" red="cc" type="rgb"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
                 </Container>
               </SubComponents>
             </Container>

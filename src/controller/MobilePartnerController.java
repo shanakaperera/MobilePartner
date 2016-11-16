@@ -302,9 +302,10 @@ public class MobilePartnerController {
             emf = Persistence.createEntityManagerFactory("MobilePartnerPU",
                     getConfiguredOverrides());
         } else {
-            createXML();
-            emf = Persistence.createEntityManagerFactory("MobilePartnerPU",
-                    getConfiguredOverrides());
+            // createXML();
+            //            emf = Persistence.createEntityManagerFactory("MobilePartnerPU",
+            //                    getConfiguredOverrides());
+            emf = null;
 
         }
         return emf;
