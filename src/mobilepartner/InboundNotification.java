@@ -7,7 +7,6 @@ package mobilepartner;
 
 import controller.MobilePartnerController;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import jpa_controllers.InboundMessageJpaController;
 import org.smslib.AGateway;
 import org.smslib.IInboundMessageNotification;
@@ -35,7 +34,7 @@ public class InboundNotification implements IInboundMessageNotification {
             dbMessage.setDateRecived(im.getDate());
             dbMessage.setMemIndex(im.getMemIndex());
             dbMessage.setMemLocation(im.getMemLocation());
-            dbMessage.setMessage(im.getText());
+            dbMessage.setMessage(im.getText().toLowerCase());
             dbMessage.setOriginator(im.getOriginator());
             dbMessage.setMpSeqNo(im.getMpSeqNo());
             dbMessage.setMpRefNo(im.getMpRefNo());

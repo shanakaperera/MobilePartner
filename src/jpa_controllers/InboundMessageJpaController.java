@@ -12,6 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import jpa_controllers.exceptions.NonexistentEntityException;
@@ -113,6 +115,22 @@ public class InboundMessageJpaController implements Serializable {
         }
     }
 
+    public List<InboundMessage> findInboundMessageEntities(String para, String attrName) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<InboundMessage> cq = cb.createQuery(InboundMessage.class);
+            Root<InboundMessage> from = cq.from(InboundMessage.class);
+            cq.where(cb.equal(from.get(attrName), para));
+            Query q = em.createQuery(cq);
+            return q.getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
     public InboundMessage findInboundMessage(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -134,5 +152,5 @@ public class InboundMessageJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

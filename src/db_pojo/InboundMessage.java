@@ -65,8 +65,11 @@ public class InboundMessage implements Serializable {
     private Integer mpSeqNo;
     @Column(name = "mp_mem_index")
     private Integer mpMemIndex;
-    @Column(name = "date_recived")
-    @Temporal(TemporalType.DATE)
+    @Column(name = "date_recived",
+            nullable = false, updatable = false, insertable = false,
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+    )
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateRecived;
     @Basic(optional = false)
     @Column(name = "is_read")
@@ -196,5 +199,5 @@ public class InboundMessage implements Serializable {
     public String toString() {
         return "db_pojo.InboundMessage[ id=" + id + " ]";
     }
-    
+
 }

@@ -60,6 +60,7 @@ public class MobilePartnerView extends javax.swing.JFrame {
     private final MessagesTableModel M_model;
     private final ContactsTableModel C_model;
     private final PredefinesTableModel P_model;
+    private final CustomComboModel Combo_model;
     final String dir = System.getProperty("user.dir");
 
     public MobilePartnerView() {
@@ -67,6 +68,7 @@ public class MobilePartnerView extends javax.swing.JFrame {
         M_model = MessagesTableModel.getInstance();
         C_model = ContactsTableModel.getInstance();
         P_model = PredefinesTableModel.getInstance();
+        Combo_model = CustomComboModel.getInstance();
         initComponents();
         checkDBConfigure();
         messageTable.removeColumn(messageTable.getColumnModel().getColumn(0));
@@ -108,7 +110,7 @@ public class MobilePartnerView extends javax.swing.JFrame {
         messageTable = new javax.swing.JTable();
         saveAsContact = new javax.swing.JButton();
         deleteMessage = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        tableFilterBox = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -196,7 +198,12 @@ public class MobilePartnerView extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        tableFilterBox.setModel(Combo_model);
+        tableFilterBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tableFilterBoxActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Reload Table With :");
 
@@ -210,7 +217,7 @@ public class MobilePartnerView extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tableFilterBox, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -227,7 +234,7 @@ public class MobilePartnerView extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(tableFilterBox, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -669,6 +676,12 @@ public class MobilePartnerView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_saveXmlActionPerformed
 
+    private void tableFilterBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableFilterBoxActionPerformed
+        M_model.filterData(tableFilterBox.getSelectedItem().toString());
+        messageTable.setModel(M_model);
+        M_model.fireTableDataChanged();
+    }//GEN-LAST:event_tableFilterBoxActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -716,7 +729,6 @@ public class MobilePartnerView extends javax.swing.JFrame {
     private javax.swing.JButton deleteContact;
     private javax.swing.JButton deleteMessage;
     private javax.swing.JButton deletePredefines;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -742,6 +754,7 @@ public class MobilePartnerView extends javax.swing.JFrame {
     private javax.swing.JButton saveAsContact;
     private javax.swing.JButton saveXml;
     private javax.swing.JButton startConnectionBtn;
+    private javax.swing.JComboBox<String> tableFilterBox;
     // End of variables declaration//GEN-END:variables
 
     private void initLinkBoxMessages(final int itemsPerPage, final int currentPageIndex) {

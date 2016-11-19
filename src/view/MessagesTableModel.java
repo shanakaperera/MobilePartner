@@ -40,6 +40,11 @@ public class MessagesTableModel extends AbstractTableModel {
         modelData.addAll(getAllMessages());
     }
 
+    public void filterData(String msg_type) {
+        modelData.clear();
+        modelData.addAll(msg_type.equals("All") ? getAllMessages() : getAllMessagesFilterBy(msg_type));
+    }
+
     @Override
     public int getRowCount() {
         return modelData.size();
@@ -123,7 +128,40 @@ public class MessagesTableModel extends AbstractTableModel {
             List<InboundMessage> inMsgs = imMsgController.findInboundMessageEntities();
             ArrayList<Message> tableMsgs = new ArrayList<>();
             for (InboundMessage inMsg : inMsgs) {
-                MessageDefine findMessageDefine = msgDefineController.findMessageDefine(inMsg.getMessage(), "typeName");
+                MessageDefine findMessageDefine = msgDefineController.findMessageDefine(inMsg.getMessage().toLowerCase(), "typeName");
+                SavedContacts findSavedContact = svdCntctController.findSavedContact(inMsg.getOriginator(), "number");
+                if (findMessageDefine != null) {
+                    if (findSavedContact != null) {
+                        tableMsgs.add(new Message(inMsg.getId(), inMsg.getMessage(), findSavedContact.getContactName(),
+                                findMessageDefine.getTypeName(), dformat.format(inMsg.getDateRecived())));
+                    } else {
+                        tableMsgs.add(new Message(inMsg.getId(), inMsg.getMessage(), inMsg.getOriginator(),
+                                findMessageDefine.getTypeName(), dformat.format(inMsg.getDateRecived())));
+                    }
+                }
+            }
+
+            return tableMsgs;
+        } catch (Exception ex) {
+            Logger.getLogger(MessagesTableModel.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    private ArrayList<Message> getAllMessagesFilterBy(String msg_type) {
+
+        try {
+            EntityManagerFactory emf = MobilePartnerController.getInstance().getEntityManagerFactory();
+            InboundMessageJpaController imMsgController = new InboundMessageJpaController(emf);
+            MessageDefineJpaController msgDefineController = new MessageDefineJpaController(emf);
+            SavedContactsJpaController svdCntctController = new SavedContactsJpaController(emf);
+
+            SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+
+            List<InboundMessage> inMsgs = imMsgController.findInboundMessageEntities(msg_type, "message");
+            ArrayList<Message> tableMsgs = new ArrayList<>();
+            for (InboundMessage inMsg : inMsgs) {
+                MessageDefine findMessageDefine = msgDefineController.findMessageDefine(msg_type, "typeName");
                 SavedContacts findSavedContact = svdCntctController.findSavedContact(inMsg.getOriginator(), "number");
                 if (findMessageDefine != null) {
                     if (findSavedContact != null) {

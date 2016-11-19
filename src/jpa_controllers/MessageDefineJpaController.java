@@ -17,6 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import jpa_controllers.exceptions.NonexistentEntityException;
+import org.eclipse.persistence.internal.jpa.EJBQueryImpl;
 
 /**
  *
@@ -132,8 +133,10 @@ public class MessageDefineJpaController implements Serializable {
             Root<MessageDefine> from = cq.from(MessageDefine.class);
             cq.where(cb.equal(from.get(attrName), para));
             Query q = em.createQuery(cq);
+            q.getSingleResult();
             return (MessageDefine) q.getSingleResult();
         } catch (NoResultException ex) {
+          //  System.out.println(ex);
             return null;
         } finally {
             em.close();

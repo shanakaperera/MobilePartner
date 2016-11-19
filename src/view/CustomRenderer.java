@@ -5,12 +5,18 @@
  */
 package view;
 
+import controller.MobilePartnerController;
+import db_pojo.MessageDefine;
 import java.awt.Color;
 import java.awt.Component;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManagerFactory;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellRenderer;
+import jpa_controllers.MessageDefineJpaController;
 
 /**
  *
@@ -30,12 +36,9 @@ public class CustomRenderer implements TableCellRenderer {
             editor.setText(value.toString());
 
             String colVal = table.getModel().getValueAt(row, 3).toString();
-           // System.out.println(colVal);
+            // System.out.println(colVal);
             setColumnForegroundColorWithColumnLogic(column, 2, editor,
-                    Color.green, colVal.equalsIgnoreCase("success"));
-            setColumnForegroundColorWithColumnLogic(column, 2, editor,
-                    Color.orange, colVal.equalsIgnoreCase("warning"));
-            //  setRowBackgroundColorWithColumnLogic(editor, Color.YELLOW, age <= 18);
+                    figureColumnValue(colVal), figureColumnValue(colVal) != null);
 
             if (isSelected) {
                 editor.setBackground(Color.BLUE);
@@ -67,6 +70,23 @@ public class CustomRenderer implements TableCellRenderer {
             component.setBackground(color_background);
         }
 
+    }
+
+    private Color figureColumnValue(String col_val) {
+        try {
+            EntityManagerFactory emf = MobilePartnerController.getInstance().getEntityManagerFactory();
+            MessageDefineJpaController msgDefineController = new MessageDefineJpaController(emf);
+            MessageDefine findMessageDefine = msgDefineController.findMessageDefine(col_val.toLowerCase(), "typeName");
+            if (findMessageDefine != null) {
+                return new Color(Integer.parseInt(findMessageDefine.getDescription()));
+            } else {
+                return null;
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(CustomRenderer.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
 }
