@@ -6,6 +6,8 @@
 package view;
 
 import controller.MobilePartnerController;
+import db_ddl.CreateDB;
+import db_ddl.ReadQuery;
 import db_pojo.MessageDefine;
 import db_pojo.SavedContacts;
 import java.awt.Color;
@@ -15,6 +17,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -61,9 +69,22 @@ public class MobilePartnerView extends javax.swing.JFrame {
     private final ContactsTableModel C_model;
     private final PredefinesTableModel P_model;
     private final CustomComboModel Combo_model;
+    private final CreateDB dbCreate = CreateDB.getInstance();
     final String dir = System.getProperty("user.dir");
 
-    public MobilePartnerView() {
+    public MobilePartnerView() throws URISyntaxException, IOException, SQLException {
+
+        //If mobile Partner DB not exist then create DB
+        if (!dbCreate.DBExist()) {
+            File file = new File(CreateDB.class.getResource("mobile_partner_ddl.sql").toURI());
+            ArrayList<String> createQueries = ReadQuery.createQueries(file.getCanonicalPath());
+            for (String query : createQueries) {
+                try (Connection conn = dbCreate.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+                    ps.execute();
+                    ps.close();
+                }
+            }
+        }
         controller = MobilePartnerController.getInstance();
         M_model = MessagesTableModel.getInstance();
         C_model = ContactsTableModel.getInstance();
@@ -712,7 +733,15 @@ public class MobilePartnerView extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MobilePartnerView().setVisible(true);
+                try {
+                    new MobilePartnerView().setVisible(true);
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(MobilePartnerView.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(MobilePartnerView.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(MobilePartnerView.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
