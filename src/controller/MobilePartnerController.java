@@ -241,10 +241,15 @@ public class MobilePartnerController {
         }
     }
 
-    public void beginConnection() {
+    public boolean beginConnection() {
         figureOutPort();
         System.out.println("PORT USE : " + getFoundPort());
-        startConnection(getFoundPort());
+        if (getFoundPort() != null) {
+            startConnection(getFoundPort());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Map<String, Object> getConfiguredOverrides() throws Exception {

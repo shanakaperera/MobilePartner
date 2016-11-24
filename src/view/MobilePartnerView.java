@@ -125,6 +125,7 @@ public class MobilePartnerView extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         startConnectionBtn = new javax.swing.JButton();
+        connectionErrorLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         box_messages = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -170,19 +171,30 @@ public class MobilePartnerView extends javax.swing.JFrame {
             }
         });
 
+        connectionErrorLabel.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        connectionErrorLabel.setForeground(new java.awt.Color(255, 51, 51));
+        connectionErrorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(299, 299, 299)
-                .addComponent(startConnectionBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(355, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(299, 299, 299)
+                        .addComponent(startConnectionBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(116, 116, 116)
+                        .addComponent(connectionErrorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(172, 172, 172)
+                .addGap(65, 65, 65)
+                .addComponent(connectionErrorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(76, 76, 76)
                 .addComponent(startConnectionBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(227, Short.MAX_VALUE))
         );
@@ -501,8 +513,14 @@ public class MobilePartnerView extends javax.swing.JFrame {
             controller.endConnection();
             startConnectionBtn.setText("Start Connection");
         } else {
-            controller.beginConnection();
-            startConnectionBtn.setText("End Connection");
+            boolean connectionStarted = controller.beginConnection();
+            if (connectionStarted) {
+                connectionErrorLabel.setText("");
+                startConnectionBtn.setText("End Connection");
+            } else {
+                connectionErrorLabel.setText("Something wrong with your connection. Please check the usb modem.");
+            }
+
         }
     }//GEN-LAST:event_startConnectionBtnActionPerformed
 
@@ -750,6 +768,7 @@ public class MobilePartnerView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel box_contacts;
     private javax.swing.JPanel box_messages;
+    private javax.swing.JLabel connectionErrorLabel;
     private javax.swing.JTable contactsTable;
     private javax.swing.JTextField dbDriver;
     private javax.swing.JLabel dbMessage;
