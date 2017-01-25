@@ -31,6 +31,12 @@ public class CustomComboModel extends AbstractListModel implements ComboBoxModel
         messageTypes.addAll(getMessageTypes());
     }
 
+    public void addAllData() {
+        messageTypes.clear();
+        messageTypes.add("All");
+        messageTypes.addAll(getMessageTypes());
+    }
+
     @Override
     public int getSize() {
         return messageTypes.size();
@@ -53,6 +59,11 @@ public class CustomComboModel extends AbstractListModel implements ComboBoxModel
 
     public static CustomComboModel getInstance() {
         return singletonForm;
+    }
+
+    @Override
+    protected void fireContentsChanged(Object source, int index0, int index1) {
+        super.fireContentsChanged(source, index0, index1);
     }
 
     private List<String> getMessageTypes() {

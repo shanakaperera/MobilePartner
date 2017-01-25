@@ -17,7 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import jpa_controllers.exceptions.NonexistentEntityException;
-import org.eclipse.persistence.internal.jpa.EJBQueryImpl;
+
 
 /**
  *

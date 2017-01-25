@@ -655,12 +655,19 @@ public class MobilePartnerView extends javax.swing.JFrame {
                 predefinesTable.setModel(P_model);
                 P_model.fireTableDataChanged();
 
+                //refresh combobox model
+                Combo_model.addAllData();
+                Combo_model.fireContentsChanged(this, 0, 0);
+                tableFilterBox.setModel(Combo_model);
+                tableFilterBox.showPopup();
+
                 /// refresh message table too
                 M_model.addAllData();
                 messageTable.setModel(M_model);
                 M_model.fireTableDataChanged();
+
             } catch (Exception ex) {
-                Logger.getLogger(MobilePartnerView.class.getName()).log(Level.SEVERE, null, ex);
+              //  Logger.getLogger(MobilePartnerView.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_newPredefinesActionPerformed
@@ -688,6 +695,13 @@ public class MobilePartnerView extends javax.swing.JFrame {
                     P_model.addAllData();
                     predefinesTable.setModel(P_model);
                     P_model.fireTableDataChanged();
+
+                    //refresh combobox model
+                    Combo_model.addAllData();
+                    Combo_model.fireContentsChanged(this, 0, 0);
+                    tableFilterBox.setModel(Combo_model);
+                    tableFilterBox.showPopup();
+
                     /// refresh message table too
                     M_model.addAllData();
                     messageTable.setModel(M_model);
@@ -695,7 +709,7 @@ public class MobilePartnerView extends javax.swing.JFrame {
                 } catch (NonexistentEntityException ex) {
                     Logger.getLogger(MobilePartnerView.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (Exception ex) {
-                    Logger.getLogger(MobilePartnerView.class.getName()).log(Level.SEVERE, null, ex);
+                   // Logger.getLogger(MobilePartnerView.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 

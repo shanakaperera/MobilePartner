@@ -3,5 +3,5 @@
   <url name="javax.persistence.jdbc.url">jdbc:mysql://localhost:3306/mobile_partner</url>
   <user name="javax.persistence.jdbc.user">root</user>
   <driver name="javax.persistence.jdbc.driver">com.mysql.jdbc.Driver</driver>
-  <password name="javax.persistence.jdbc.password">nbuser</password>
+  <password name="javax.persistence.jdbc.password">123</password>
 </dbconf>
